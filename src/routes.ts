@@ -13,7 +13,7 @@ routes.get('/', (req: Request, res: Response) => {
 routes.post('/login', login);
 
 routes.get('/user',  getAll);
-routes.get('/user/:id', [checkJwt, checkRole(["USER"])], getById);
+routes.get('/user/:id', [checkJwt, checkRole(["ADMIN"])], getById);
 routes.post('/user',  create);
 routes.put('/user/:id',  update);
 routes.delete('/user/:id',  remove);

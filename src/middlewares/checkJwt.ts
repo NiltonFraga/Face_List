@@ -10,7 +10,7 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
 
     const [ , token] = auth.split(' ');
 
-    let payload;
+    let payload: any;
 
     try{
         payload = jwt.verify(token, process.env.SECRET);

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { getRepository as context} from 'typeorm';
+import { getRepository as context } from 'typeorm';
 import { User } from '../models/User'
 
 export const checkRole = (roles: Array<string>) => {

@@ -1,70 +1,70 @@
-import {getRepository as context} from "typeorm";
-import {NextFunction, Request, Response} from "express";
-import * as bcrypt from 'bcrypt';
-import {User} from "../models/User";
+import { Request, Response } from "express";
+import { UserRepository } from '../Repository/user/UserRepository';
+import { isNullOrUndefined, isObject } from "util";
+
+const userRepository = new UserRepository();
 
 export const getAll = async (req: Request, res: Response) => {
-    const users = await context(User).find();
 
-    return res.json(users);
+    const users = userRepository.index();
+
+    users.then(users =>{
+        if(!isNullOrUndefined(users))
+            return res.status(200).json(users);
+    })
 }
 
 export const getById = async (req: Request, res: Response) => {
     const { id } = req.params
     
-    const user = await context(User).findOne(id);
+    const user = userRepository.show(id);
 
-    return res.json(user);
+    user.then(resp =>{
+        if(isObject(resp))
+            return res.status(200).json(resp);
+        else
+            return res.status(404).json({ message: resp})
+    })
 }
 
 export const create = async (req: Request, res: Response) => {
-    const { name, email, role, age, password} = req.body;
+    const user = req.body;
 
-    const passwordHash = await bcrypt.hash(password, 8);
+    const newUser = userRepository.create(user);
 
-    const user = await context(User).save({
-        name,
-        email,
-        role,
-        age,
-        password: passwordHash
-    });
-
-    return res.json(user);
+    newUser.then(resp =>{
+        if(!isNullOrUndefined(resp))
+            return res.status(200).json(resp);
+        else
+            return res.status(400).json({ message: resp})
+    })
 }
 
 export const update = async (req: Request, res: Response) => {
+   
     const { id } = req.params;
 
-    const {name, email, role, age, password} = req.body;
-
-    const passwordHash = await bcrypt.hash(password, 8);
+    const user = req.body;
     
-    const user = await context(User).update(id, {
-        name,
-        email,
-        role,
-        age,
-        password: passwordHash
-    });
+    const newUser = userRepository.update(id, user)
 
-    if(user.affected == 1){
-        const userNew = await context(User).findOne(id);
-        return res.json(userNew);
-    }
-
-    return res.status(404).json({ message: "Usuario não encontrado"});
+    newUser.then(user =>{
+        if(isObject(user))
+            return res.status(200).json(user);
+        else
+            return res.status(404).json({ message: user});
+    })
 }
 
 export const remove = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const user = await context(User).delete(id);
+    const user = userRepository.remove(id)
 
-    if(user.affected == 1){
-        await context(User).findOne(id);
-        return res.json({ message: 'Usuario removido!'});
-    }
-
-    return res.status(404).json({ message: "Usuario não encontrado"});
+    user.then(resp =>{
+        if(!isNullOrUndefined(resp))
+            return res.status(200).json({ message: resp});
+        else
+            return res.status(404).json({ message: "Usuario não encontrado"});
+    })
 }

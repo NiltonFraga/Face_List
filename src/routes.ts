@@ -1,6 +1,6 @@
 import {Router, Request, Response} from  'express';
 import { create, getAll, getById, remove, update}  from './controller/UserController'
-import { login } from './controller/AuthController'
+import { login } from './controller/LoginController'
 import { checkJwt } from "./middlewares/checkJwt";
 import { checkRole } from "./middlewares/checkRole";
 

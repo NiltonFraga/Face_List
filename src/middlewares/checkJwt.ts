@@ -5,7 +5,7 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
     const auth = req.headers.authorization;
 
     if(!auth || auth == 'Bearer'){
-        return res.status(401).json({ message: 'Token nao inserido'});
+        return res.status(401).json({ message: 'Usuario não autenticado!'});
     }
 
     const [ , token] = auth.split(' ');
@@ -17,6 +17,6 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
         res.locals.jwtPayload = payload;
         next();
     }catch(error){
-        return res.status(401).json({ message: 'Token invalido!'});
+        return res.status(401).json({ message: 'Usuario não autenticado!'});
     }
 }

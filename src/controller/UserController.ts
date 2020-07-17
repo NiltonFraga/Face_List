@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { UserRepository } from '../Repository/user/UserRepository';
+import { UserRepository } from '../repository/user/UserRepository';
 import { isNullOrUndefined, isObject } from "util";
 
 const userRepository = new UserRepository();

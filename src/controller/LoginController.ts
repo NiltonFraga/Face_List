@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { LoginRepository } from '../Repository/login/LoginRepository';
+import { LoginRepository } from '../repository/login/LoginRepository';
 import { isObject } from 'util';
 
 const loginRepository = new LoginRepository();

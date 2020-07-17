@@ -1,5 +1,7 @@
 # API USANDO TYPEORM
 
+API com autenticação jwt e controle de roles
+
 Para iniciar a aplicação siga os passos:
 
 1. Inicie o comando `npm i` 
